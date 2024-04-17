@@ -80,10 +80,6 @@ int main() {
 			st.push({ h[i] , i });
 		}
 
-		for (auto x : sum) {
-			cout << x << " ";
-		}
-		cout << endl;
 		int q;
 		cin >> q;
 
