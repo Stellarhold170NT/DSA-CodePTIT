@@ -19,9 +19,9 @@ using namespace std;
 #define ll long long
 // MAX (long long) 1000000000000000000
 //#define M 100 + 5
-#define N 200
+#define N 600000
 
-#define MOD (ll) 1000000007
+#define MOD (ll) 998244353
 #define ld long double
 #define sz size()
 #define FOR(i, a, b) for(int i = a; i <= b; i++)
@@ -29,75 +29,63 @@ using namespace std;
 #define faster() ios_base::sync_with_stdio(0); cin.tie(NULL); cout.tie(NULL);
 #define zero(n) setw(n) << setfill('0')
 #define stp(n) fixed << setprecision(n)
-
-
-inline bool doixung(string s) {
+bool doixung(string s) {
 	string tmp = s;
 	reverse(tmp.begin(), tmp.end());
 	return tmp == s;
 }
-
 int main() {
+	//freopen("input.txt", "r", stdin);
+	//freopen("output.txt", "w", stdout);
+
 	int t;
 	cin >> t;
+
+	queue<string> q;
+	q.push("6");
+	q.push("8");
+
+	vector<string> res;
+
+	int lim = 26;
+	int m = 13;
+
+	while (q.front().size() < m) {
+		string cur = q.front();
+		q.pop();
+		string a = cur + "6";
+		string b = cur + "8";
+		res.push_back(a);
+		res.push_back(b);
+		q.push(a);
+		q.push(b);
+	}
+	vector<string> ans;
+
+
+
+	for (int i = 0; i < res.size(); i++) {
+		if (doixung(res[i]) && res[i].size() % 2 == 0) ans.push_back(res[i]);
+		if (res[i].size() * 2 > m && res[i].size() * 2 <= lim) {
+			string sr = res[i];
+			reverse(sr.begin(), sr.end());
+			ans.push_back(res[i] + sr);
+		}
+		if (ans.size() >= 10000) break;
+	}
+
+	sort(ans.begin(), ans.end(), [](string a, string b) {
+		return (a.length() < b.length()) || (a.length() == b.length() && a < b);
+		});
+
 
 	while (t--) {
 		int n;
 		cin >> n;
 
-		int m = n / 2;
-		if (n % 2 == 1) m++;
+		for (int i = 0; i < n; i++) cout << ans[i] << " ";
 
-		queue<string> q;
-
-		q.push("6");
-		q.push("8");
-
-		vector<string> res;
-
-		res.push_back("6");
-		res.push_back("8");
-
-		while (q.front().size() < m) {
-			queue<string> tmp;
-
-			while (!q.empty()) {
-				res.push_back(q.front() + "6");
-				res.push_back(q.front() + "8");
-				tmp.push(q.front() + "6");
-				tmp.push(q.front() + "8");
-				q.pop();
-			}
-
-			q = tmp;
-		}
-
-		int rz = res.size();
-		for (int i = 0; i < rz; i++) {
-			string s = res[i];
-			if (s.size() * 2 > m && s.size() * 2 <= n) {
-				string sr = s;
-				reverse(sr.begin(), sr.end());
-				res.push_back(s + sr);
-			}
-
-			if (s.size() * 2 - 1 > m && s.size() * 2 - 1 <= n) {
-				string sr = s;
-				sr.pop_back();
-				reverse(sr.begin(), sr.end());
-				res.push_back(s + sr);
-			}
-		}
-
-		sort(res.begin(), res.end(), [](string a, string b) {
-			return (a.size() < b.size()) || (a.size() == b.size() && a < b);
-			});
-
-		for (auto x : res)
-			if (doixung(x)) cout << x << endl;
 		cout << endl;
-
 	}
-
 	return 0;
 }
